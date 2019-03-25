@@ -20,8 +20,8 @@ namespace Proyecto1BD1.Models
         public string Correo { get; set; }
         public DateTime? FechaNacimiento { get; set; }
         public string NumeroPartida { get; set; }
-        public String Fotografia { get; set; }
-        public String Password { get; set; }
+        public string Fotografia { get; set; }
+        public byte[] Password { get; set; }
 
         public ICollection<CursoEstudiante> CursoEstudiante { get; set; }
         public ICollection<EstuResp> EstuResp { get; set; }

@@ -16,10 +16,12 @@ namespace Proyecto1BD1.Models
         public DateTime? FechaPublicacion { get; set; }
         public int? Valor { get; set; }
         public DateTime? FechaLimite { get; set; }
+        public int Registro { get; set; }
+        public int Carrera { get; set; }
         public int Curso { get; set; }
         public int Publicacion { get; set; }
 
-        public Curso CursoNavigation { get; set; }
+        public MaestroCarrera MaestroCarrera { get; set; }
         public Publicacion PublicacionNavigation { get; set; }
         public ICollection<NotaZona> NotaZona { get; set; }
     }

@@ -197,8 +197,7 @@ namespace Proyecto1BD1.Controllers
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
-            {
-                String Carnet = "";
+            {                
                 String Nombre = "";
                 String Apellido = "";
                 String Telefono = "";

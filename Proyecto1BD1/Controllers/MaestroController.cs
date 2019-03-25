@@ -261,7 +261,6 @@ namespace Proyecto1BD1.Controllers
                 }
                 connection.Close();
                 return RedirectToAction(nameof(Index));
-                return RedirectToAction(nameof(Index));
             }
             catch
             {

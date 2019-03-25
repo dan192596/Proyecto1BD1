@@ -18,7 +18,7 @@ namespace Proyecto1BD1.Models
         public string Direccion { get; set; }
         public string Correo { get; set; }
         public DateTime? FechaNacimiento { get; set; }
-        public byte[] Fotografia { get; set; }
+        public string Fotografia { get; set; }
         public byte[] Password { get; set; }
 
         public ICollection<MaestroCarrera> MaestroCarrera { get; set; }

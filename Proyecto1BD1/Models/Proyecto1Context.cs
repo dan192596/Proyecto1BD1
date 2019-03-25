@@ -52,6 +52,8 @@ namespace Proyecto1BD1.Models
 
                 entity.Property(e => e.Actividad1).HasColumnName("actividad");
 
+                entity.Property(e => e.Carrera).HasColumnName("carrera");
+
                 entity.Property(e => e.Curso).HasColumnName("curso");
 
                 entity.Property(e => e.Descripcion)
@@ -69,6 +71,8 @@ namespace Proyecto1BD1.Models
 
                 entity.Property(e => e.Publicacion).HasColumnName("publicacion");
 
+                entity.Property(e => e.Registro).HasColumnName("registro");
+
                 entity.Property(e => e.Titulo)
                     .HasColumnName("titulo")
                     .HasMaxLength(255)
@@ -76,17 +80,17 @@ namespace Proyecto1BD1.Models
 
                 entity.Property(e => e.Valor).HasColumnName("valor");
 
-                entity.HasOne(d => d.CursoNavigation)
-                    .WithMany(p => p.Actividad)
-                    .HasForeignKey(d => d.Curso)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("actividad_curso_fk");
-
                 entity.HasOne(d => d.PublicacionNavigation)
                     .WithMany(p => p.Actividad)
                     .HasForeignKey(d => d.Publicacion)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("actividad_publicacion_fk");
+
+                entity.HasOne(d => d.MaestroCarrera)
+                    .WithMany(p => p.Actividad)
+                    .HasForeignKey(d => new { d.Registro, d.Carrera, d.Curso })
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("actividad_maestro_carrera_fk");
             });
 
             modelBuilder.Entity<Aviso>(entity =>
@@ -155,29 +159,23 @@ namespace Proyecto1BD1.Models
 
                 entity.Property(e => e.Curso1).HasColumnName("curso");
 
-                entity.Property(e => e.Carrera).HasColumnName("carrera");
-
                 entity.Property(e => e.Nombre)
                     .HasColumnName("nombre")
                     .HasMaxLength(255)
                     .IsUnicode(false);
-
-                entity.Property(e => e.Registro).HasColumnName("registro");
-
-                entity.HasOne(d => d.MaestroCarrera)
-                    .WithMany(p => p.Curso)
-                    .HasForeignKey(d => new { d.Registro, d.Carrera })
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("curso_maestro_carrera_fk");
             });
 
             modelBuilder.Entity<CursoEstudiante>(entity =>
             {
-                entity.HasKey(e => new { e.Carnet, e.Curso });
+                entity.HasKey(e => new { e.Carnet, e.Registro, e.Carrera, e.Curso });
 
                 entity.ToTable("curso_estudiante");
 
                 entity.Property(e => e.Carnet).HasColumnName("carnet");
+
+                entity.Property(e => e.Registro).HasColumnName("registro");
+
+                entity.Property(e => e.Carrera).HasColumnName("carrera");
 
                 entity.Property(e => e.Curso).HasColumnName("curso");
 
@@ -187,11 +185,11 @@ namespace Proyecto1BD1.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("curso_estudiante_estudiante_fk");
 
-                entity.HasOne(d => d.CursoNavigation)
+                entity.HasOne(d => d.MaestroCarrera)
                     .WithMany(p => p.CursoEstudiante)
-                    .HasForeignKey(d => d.Curso)
+                    .HasForeignKey(d => new { d.Registro, d.Carrera, d.Curso })
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("curso_estudiante_curso_fk");
+                    .HasConstraintName("curso_estudiante_maestro_carrera_fk");
             });
 
             modelBuilder.Entity<Documento>(entity =>
@@ -202,6 +200,8 @@ namespace Proyecto1BD1.Models
 
                 entity.Property(e => e.Documento1).HasColumnName("documento");
 
+                entity.Property(e => e.Carrera).HasColumnName("carrera");
+
                 entity.Property(e => e.Curso).HasColumnName("curso");
 
                 entity.Property(e => e.Descripcion)
@@ -211,22 +211,24 @@ namespace Proyecto1BD1.Models
 
                 entity.Property(e => e.Publicacion).HasColumnName("publicacion");
 
+                entity.Property(e => e.Registro).HasColumnName("registro");
+
                 entity.Property(e => e.Titulo)
                     .HasColumnName("titulo")
                     .HasMaxLength(255)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.CursoNavigation)
-                    .WithMany(p => p.Documento)
-                    .HasForeignKey(d => d.Curso)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("documento_curso_fk");
 
                 entity.HasOne(d => d.PublicacionNavigation)
                     .WithMany(p => p.Documento)
                     .HasForeignKey(d => d.Publicacion)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("documento_publicacion_fk");
+
+                entity.HasOne(d => d.MaestroCarrera)
+                    .WithMany(p => p.Documento)
+                    .HasForeignKey(d => new { d.Registro, d.Carrera, d.Curso })
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("documento_maestro_carrera_fk");
             });
 
             modelBuilder.Entity<Estudiante>(entity =>
@@ -260,7 +262,8 @@ namespace Proyecto1BD1.Models
 
                 entity.Property(e => e.Fotografia)
                     .HasColumnName("fotografia")
-                    .HasColumnType("image");
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Nombre)
                     .HasColumnName("nombre")
@@ -322,6 +325,8 @@ namespace Proyecto1BD1.Models
 
                 entity.Property(e => e.Examen1).HasColumnName("examen");
 
+                entity.Property(e => e.Carrera).HasColumnName("carrera");
+
                 entity.Property(e => e.Curso).HasColumnName("curso");
 
                 entity.Property(e => e.FechaHoraFinal)
@@ -332,11 +337,13 @@ namespace Proyecto1BD1.Models
                     .HasColumnName("fecha_hora_inicio")
                     .HasColumnType("datetime");
 
-                entity.HasOne(d => d.CursoNavigation)
+                entity.Property(e => e.Registro).HasColumnName("registro");
+
+                entity.HasOne(d => d.MaestroCarrera)
                     .WithMany(p => p.Examen)
-                    .HasForeignKey(d => d.Curso)
+                    .HasForeignKey(d => new { d.Registro, d.Carrera, d.Curso })
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("examen_curso_fk");
+                    .HasConstraintName("examen_maestro_carrera_fk");
             });
 
             modelBuilder.Entity<Maestro>(entity =>
@@ -368,11 +375,12 @@ namespace Proyecto1BD1.Models
 
                 entity.Property(e => e.FechaNacimiento)
                     .HasColumnName("fecha_nacimiento")
-                    .HasColumnType("datetime");
+                    .HasColumnType("date");
 
                 entity.Property(e => e.Fotografia)
                     .HasColumnName("fotografia")
-                    .HasColumnType("image");
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Nombre)
                     .HasColumnName("nombre")
@@ -391,7 +399,7 @@ namespace Proyecto1BD1.Models
 
             modelBuilder.Entity<MaestroCarrera>(entity =>
             {
-                entity.HasKey(e => new { e.Registro, e.Carrera });
+                entity.HasKey(e => new { e.Registro, e.Carrera, e.Curso });
 
                 entity.ToTable("maestro_carrera");
 
@@ -399,11 +407,19 @@ namespace Proyecto1BD1.Models
 
                 entity.Property(e => e.Carrera).HasColumnName("carrera");
 
+                entity.Property(e => e.Curso).HasColumnName("curso");
+
                 entity.HasOne(d => d.CarreraNavigation)
                     .WithMany(p => p.MaestroCarrera)
                     .HasForeignKey(d => d.Carrera)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("maestro_carrera_carrera_fk");
+
+                entity.HasOne(d => d.CursoNavigation)
+                    .WithMany(p => p.MaestroCarrera)
+                    .HasForeignKey(d => d.Curso)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("maestro_carrera_curso_fk");
 
                 entity.HasOne(d => d.RegistroNavigation)
                     .WithMany(p => p.MaestroCarrera)
@@ -414,15 +430,19 @@ namespace Proyecto1BD1.Models
 
             modelBuilder.Entity<NotaZona>(entity =>
             {
-                entity.HasKey(e => new { e.Actividad, e.Curso, e.Carnet });
+                entity.HasKey(e => new { e.Actividad, e.Carnet, e.Registro, e.Carrera, e.Curso });
 
                 entity.ToTable("nota_zona");
 
                 entity.Property(e => e.Actividad).HasColumnName("actividad");
 
-                entity.Property(e => e.Curso).HasColumnName("curso");
-
                 entity.Property(e => e.Carnet).HasColumnName("carnet");
+
+                entity.Property(e => e.Registro).HasColumnName("registro");
+
+                entity.Property(e => e.Carrera).HasColumnName("carrera");
+
+                entity.Property(e => e.Curso).HasColumnName("curso");
 
                 entity.Property(e => e.Nota)
                     .HasColumnName("nota")
@@ -439,24 +459,28 @@ namespace Proyecto1BD1.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("nota_zona_actividad_fk");
 
-                entity.HasOne(d => d.C)
+                entity.HasOne(d => d.CursoEstudiante)
                     .WithMany(p => p.NotaZona)
-                    .HasForeignKey(d => new { d.Carnet, d.Curso })
+                    .HasForeignKey(d => new { d.Carnet, d.Registro, d.Carrera, d.Curso })
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("nota_zona_curso_estudiante_fk");
             });
 
             modelBuilder.Entity<ParticipacionExamen>(entity =>
             {
-                entity.HasKey(e => new { e.Examen, e.Curso, e.Carnet });
+                entity.HasKey(e => new { e.Examen, e.Carnet, e.Registro, e.Carrera, e.Curso });
 
                 entity.ToTable("participacion_examen");
 
                 entity.Property(e => e.Examen).HasColumnName("examen");
 
-                entity.Property(e => e.Curso).HasColumnName("curso");
-
                 entity.Property(e => e.Carnet).HasColumnName("carnet");
+
+                entity.Property(e => e.Registro).HasColumnName("registro");
+
+                entity.Property(e => e.Carrera).HasColumnName("carrera");
+
+                entity.Property(e => e.Curso).HasColumnName("curso");
 
                 entity.Property(e => e.Nota)
                     .HasColumnName("nota")
@@ -468,9 +492,9 @@ namespace Proyecto1BD1.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("participacion_examen_examen_fk");
 
-                entity.HasOne(d => d.C)
+                entity.HasOne(d => d.CursoEstudiante)
                     .WithMany(p => p.ParticipacionExamen)
-                    .HasForeignKey(d => new { d.Carnet, d.Curso })
+                    .HasForeignKey(d => new { d.Carnet, d.Registro, d.Carrera, d.Curso })
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("participacion_examen_curso_estudiante_fk");
             });
