@@ -14,9 +14,11 @@ namespace Proyecto1BD1.Models
         public int Examen1 { get; set; }
         public DateTime? FechaHoraInicio { get; set; }
         public DateTime? FechaHoraFinal { get; set; }
+        public int Registro { get; set; }
+        public int Carrera { get; set; }
         public int Curso { get; set; }
 
-        public Curso CursoNavigation { get; set; }
+        public MaestroCarrera MaestroCarrera { get; set; }
         public ICollection<ParticipacionExamen> ParticipacionExamen { get; set; }
         public ICollection<Pregunta> Pregunta { get; set; }
     }
