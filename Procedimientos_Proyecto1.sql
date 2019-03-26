@@ -4,7 +4,7 @@ use Proyecto1;
 ------------------------------------------------ ESTUDIANTE -------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------
 
---Se envían los datos de un estudiante y los almacena en la base de datos
+--Se envï¿½an los datos de un estudiante y los almacena en la base de datos
 CREATE PROCEDURE INSERCION_ESTUDIANTE(   
 	@carnet int, 
 	@nombre varchar(255),
@@ -26,14 +26,14 @@ BEGIN
 	VALUES(@carnet, @nombre, @apellido, @telefono, @telefono_tutor, @direccion, @correo, @fecha_nacimiento, @numero_partida, @fotografia, @X)
 END
 
---Devuelve la lista de todos los estudiantes que están almacenados en la base de datos
+--Devuelve la lista de todos los estudiantes que estï¿½n almacenados en la base de datos
 CREATE PROCEDURE VER_ESTUDIANTES		
 AS
 BEGIN
 	SELECT * FROM estudiante
 END
 
---Elimina un estudiante recibiendo un carnét como parámetro   *****NO EJECUTAR AÚN
+--Elimina un estudiante recibiendo un carnï¿½t como parï¿½metro   *****NO EJECUTAR Aï¿½N
 --CREATE PROCEDURE ELIMINAR_ESTUDIANTE( 
 --	@carnet int
 --)AS
@@ -45,7 +45,7 @@ END
 --------------------------------------------------- MAESTRO -------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------
 
---Se envían los datos de un maestro y los almacena en la base de datos
+--Se envï¿½an los datos de un maestro y los almacena en la base de datos
 CREATE PROCEDURE INSERCION_MAESTRO(
 	@registro int,
 	@dpi int,
@@ -66,7 +66,7 @@ BEGIN
 	VALUES(@registro, @dpi, @nombre, @apellido, @telefono, @direccion, @correo, @fecha_nacimiento, @fotografia, @X)
 END
 
---Devuelve la lista de todos los maestros y todos sus datos que están almacenados en la base de datos
+--Devuelve la lista de todos los maestros y todos sus datos que estï¿½n almacenados en la base de datos
 CREATE PROCEDURE VER_MAESTROS		
 AS
 BEGIN
@@ -100,7 +100,7 @@ END
 ----------------------------------------------- MAESTRO_CARRERA ---------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------
 
-----Asignarle a un maestro el curso y la carrera en la que dará en curso
+----Asignarle a un maestro el curso y la carrera en la que darï¿½ en curso
 CREATE PROCEDURE ASIGNAR_MAETRO_CARRERA_CURSO(
 	@registro int,				--registro del maestro
 	@carrera int,				--carrera
@@ -114,7 +114,7 @@ END
 -------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------- TIPO_AVISO -----------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------
---Inserción de un tipo de aviso
+--Inserciï¿½n de un tipo de aviso
 CREATE PROCEDURE INSERCION_TIPO_AVISO(
 	@descripcion varchar(255)
 )AS
@@ -126,7 +126,7 @@ END
 -------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------- AVISO -------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------
---Creación de un Aviso en la base de datos.
+--Creaciï¿½n de un Aviso en la base de datos.
 CREATE PROCEDURE INSERCION_AVISO(
 	@titulo varchar(255),						--TITULO DEL AVISO
 	@descripcion_publicacion varchar(255),		--DESCRIPCION DE LA PUBLICACION
@@ -212,7 +212,7 @@ END
 --	RETURN @ID
 --END
 
-----Obteniendo el código de la carrera a travez de su nombre
+----Obteniendo el cï¿½digo de la carrera a travez de su nombre
 --CREATE PROCEDURE GET_CODIGO_CARRERA(
 --	@nombre varchar(255)
 --)AS
