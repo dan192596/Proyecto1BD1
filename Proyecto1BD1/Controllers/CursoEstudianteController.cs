@@ -12,45 +12,51 @@ using Proyecto1BD1.Models;
 
 namespace Proyecto1BD1.Controllers
 {
-    public class MaestroCarreraController : Controller
+    public class CursoEstudianteController : Controller
     {
-        private readonly Proyecto1Context _context=new Proyecto1Context();
-        private readonly IConfiguration configuration;        
-
-        public MaestroCarreraController(IConfiguration configuration)
+        private readonly Proyecto1Context _context = new Proyecto1Context();
+        private readonly IConfiguration configuration;
+        public CursoEstudianteController(IConfiguration configuration)
         {
             this.configuration = configuration;
         }
-        // GET: MaestroCarrera
+        // GET: CursoEstudiante
         public ActionResult Index()
         {
             String connectionstring = configuration.GetConnectionString("DefaultConnectionString");
             SqlConnection connection = new SqlConnection(connectionstring);
             List<List<String>> al = new List<List<String>>();
             connection.Open();
-            SqlCommand com = new SqlCommand("SELECT * FROM maestro_carrera", connection);
+            SqlCommand com = new SqlCommand("SELECT * FROM curso_estudiante", connection);
             SqlDataReader sdr = com.ExecuteReader();
             while (sdr.Read())
             {
                 List<String> numb = new List<string>();
-                numb.Add(sdr[0].ToString());//Registro
-                numb.Add(sdr[1].ToString());//Carrera
-                numb.Add(sdr[2].ToString());//Curso
+                numb.Add(sdr[0].ToString());//Carnet
+                numb.Add(sdr[1].ToString());//Registro
+                numb.Add(sdr[2].ToString());//Carrera
+                numb.Add(sdr[3].ToString());//Curso
                 al.Add(numb);
             }
             connection.Close();
             return View(al);
         }
 
-        // GET: MaestroCarrera/Create
+        // GET: CursoEstudiante/Create
         public ActionResult Create()
         {
+            var Estudiantes = (from item in _context.Estudiante
+                            select new SelectListItem()
+                            {
+                                Value = item.Carnet.ToString(),
+                                Text = item.Carnet.ToString()
+                            }).ToList();
             var Maestros = (from item in _context.Maestro
-                              select new SelectListItem()
-                              {
-                                  Value = item.Registro.ToString(),
-                                  Text = item.Nombre.ToString()
-                              }).ToList();
+                            select new SelectListItem()
+                            {
+                                Value = item.Registro.ToString(),
+                                Text = item.Nombre.ToString()
+                            }).ToList();
             var Carreras = (from item in _context.Carrera
                             select new SelectListItem()
                             {
@@ -58,18 +64,19 @@ namespace Proyecto1BD1.Controllers
                                 Text = item.Nombre.ToString()
                             }).ToList();
             var Cursos = (from item in _context.Curso
-                           select new SelectListItem()
-                           {
-                               Value = item.Curso1.ToString(),
-                               Text = item.Nombre.ToString()
-                           }).ToList();
+                          select new SelectListItem()
+                          {
+                              Value = item.Curso1.ToString(),
+                              Text = item.Nombre.ToString()
+                          }).ToList();
+            ViewData["Estudiantes"] = Estudiantes;
             ViewData["Maestros"] = Maestros;
             ViewData["Carreras"] = Carreras;
             ViewData["Cursos"] = Cursos;
             return View();
         }
 
-        // POST: MaestroCarrera/Create
+        // POST: CursoEstudiante/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -79,11 +86,15 @@ namespace Proyecto1BD1.Controllers
                 String Registro = "";
                 String Carrera = "";
                 String Curso = "";
+                String Carnet = "";
                 foreach (var item in collection)
                 {
                     System.Diagnostics.Debug.WriteLine(item.ToString());
                     switch (item.Key.ToString().ToLower())
                     {
+                        case "carnet":
+                            Carnet = item.Value;
+                            break;
                         case "registro":
                             Registro = item.Value;
                             break;
@@ -95,17 +106,18 @@ namespace Proyecto1BD1.Controllers
                             break;
                     }
                 }
-                if (Registro != "" && Carrera != "" && Curso!="")
+                if (Carnet!="" && Registro != "" && Carrera != "" && Curso != "")
                 {
                     String connectionstring = configuration.GetConnectionString("DefaultConnectionString");
                     SqlConnection connection = new SqlConnection(connectionstring);
                     connection.Open();
-                    String sql = "INSERT INTO maestro_carrera(registro,carrera,curso) VALUES  (@param1,@param2,@param3)";
+                    String sql = "INSERT INTO curso_estudiante(carnet,registro,carrera,curso) VALUES  (@param1,@param2,@param3,@param4)";
                     using (SqlCommand cmd = new SqlCommand(sql, connection))
                     {
-                        cmd.Parameters.Add("@param1", SqlDbType.Int).SqlValue = Registro;
-                        cmd.Parameters.Add("@param2", SqlDbType.Int).SqlValue = Carrera;
-                        cmd.Parameters.Add("@param3", SqlDbType.Int).SqlValue = Curso;
+                        cmd.Parameters.Add("@param1", SqlDbType.Int).SqlValue = Carnet;
+                        cmd.Parameters.Add("@param2", SqlDbType.Int).SqlValue = Registro;
+                        cmd.Parameters.Add("@param3", SqlDbType.Int).SqlValue = Carrera;
+                        cmd.Parameters.Add("@param4", SqlDbType.Int).SqlValue = Curso;
                         cmd.CommandType = CommandType.Text;
                         cmd.ExecuteNonQuery();
                     }
@@ -115,6 +127,12 @@ namespace Proyecto1BD1.Controllers
             }
             catch
             {
+                var Estudiantes = (from item in _context.Estudiante
+                                   select new SelectListItem()
+                                   {
+                                       Value = item.Carnet.ToString(),
+                                       Text = item.Nombre.ToString()
+                                   }).ToList();
                 var Maestros = (from item in _context.Maestro
                                 select new SelectListItem()
                                 {
@@ -133,6 +151,7 @@ namespace Proyecto1BD1.Controllers
                                   Value = item.Curso1.ToString(),
                                   Text = item.Nombre.ToString()
                               }).ToList();
+                ViewData["Estudiantes"] = Estudiantes;
                 ViewData["Maestros"] = Maestros;
                 ViewData["Carreras"] = Carreras;
                 ViewData["Cursos"] = Cursos;
@@ -140,49 +159,51 @@ namespace Proyecto1BD1.Controllers
             }
         }
 
-        // GET: MaestroCarrera/Delete/5
-        public ActionResult Delete(int registro, int carrera,int curso)
+        // GET: CursoEstudiante/Delete/5
+        public ActionResult Delete(int carnet, int registro, int carrera, int curso)
         {
             String connectionstring = configuration.GetConnectionString("DefaultConnectionString");
             SqlConnection connection = new SqlConnection(connectionstring);
             List<String> numb = new List<string>();
             connection.Open();
-            String sql = " SELECT * FROM maestro_carrera WHERE maestro_carrera.registro = @param1 AND maestro_carrera.carrera =@param2 AND maestro_carrera.curso  = @param3";
+            String sql = " SELECT * FROM curso_estudiante WHERE curso_estudiante.carnet =@param1 AND curso_estudiante.registro = @param2 AND curso_estudiante.carrera =@param3 AND curso_estudiante.curso  = @param4";
             using (SqlCommand cmd = new SqlCommand(sql, connection))
             {
-                cmd.Parameters.Add("@param1", SqlDbType.Int).SqlValue = registro;
-                cmd.Parameters.Add("@param2", SqlDbType.Int).SqlValue = carrera;
-                cmd.Parameters.Add("@param3", SqlDbType.Int).SqlValue = curso;
+                cmd.Parameters.Add("@param1", SqlDbType.Int).SqlValue = carnet;
+                cmd.Parameters.Add("@param2", SqlDbType.Int).SqlValue = registro;
+                cmd.Parameters.Add("@param3", SqlDbType.Int).SqlValue = carrera;
+                cmd.Parameters.Add("@param4", SqlDbType.Int).SqlValue = curso;
                 cmd.CommandType = CommandType.Text;
                 SqlDataReader sdr = cmd.ExecuteReader();
                 while (sdr.Read())
                 {
-                    numb.Add(sdr[0].ToString());//Maestro
-                    numb.Add(sdr[1].ToString());//Carrera
-                    numb.Add(sdr[2].ToString());//Curso
+                    numb.Add(sdr[0].ToString());//Carnet
+                    numb.Add(sdr[1].ToString());//Registro
+                    numb.Add(sdr[2].ToString());//Carrera
+                    numb.Add(sdr[3].ToString());//Curso
                 }
             }
             connection.Close();
             return View(numb);
         }
 
-        // POST: MaestroCarrera/Delete/5
+        // POST: CursoEstudiante/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int registro, int carrera, int curso, IFormCollection collection)
+        public ActionResult Delete(int carnet, int registro, int carrera, int curso, IFormCollection collection)
         {
             try
             {
                 String connectionstring = configuration.GetConnectionString("DefaultConnectionString");
                 SqlConnection connection = new SqlConnection(connectionstring);
                 connection.Open();
-                String sql = "DELETE FROM maestro_carrera WHERE maestro_carrera.registro = @param1 AND maestro_carrera.carrera =@param2 AND maestro_carrera.curso  = @param3";
+                String sql = "DELETE FROM curso_estudiante WHERE curso_estudiante.carnet =@param1 AND curso_estudiante.registro = @param2 AND curso_estudiante.carrera =@param3 AND curso_estudiante.curso  = @param4";
                 using (SqlCommand cmd = new SqlCommand(sql, connection))
                 {
-                    System.Diagnostics.Debug.WriteLine("r"+registro+" c"+carrera+" cu"+curso);
-                    cmd.Parameters.Add("@param1", SqlDbType.Int).SqlValue = registro;
-                    cmd.Parameters.Add("@param2", SqlDbType.Int).SqlValue = carrera;
-                    cmd.Parameters.Add("@param3", SqlDbType.Int).SqlValue = curso;
+                    cmd.Parameters.Add("@param1", SqlDbType.Int).SqlValue = carnet;
+                    cmd.Parameters.Add("@param2", SqlDbType.Int).SqlValue = registro;
+                    cmd.Parameters.Add("@param3", SqlDbType.Int).SqlValue = carrera;
+                    cmd.Parameters.Add("@param4", SqlDbType.Int).SqlValue = curso;
                     cmd.CommandType = CommandType.Text;
                     cmd.ExecuteNonQuery();
                 }
@@ -195,20 +216,27 @@ namespace Proyecto1BD1.Controllers
             }
         }
 
-        // GET: MaestroCarrera/Edit/5
+        // GET: CursoEstudiante/Details/5
+        public ActionResult Details(int id)
+        {
+            return View();
+        }
+
+        // GET: CursoEstudiante/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: MaestroCarrera/Edit/5
+        // POST: CursoEstudiante/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
             {
-                //No se edita porque todas son primarias
+                // TODO: Add update logic here
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -216,12 +244,5 @@ namespace Proyecto1BD1.Controllers
                 return View();
             }
         }
-
-        // GET: MaestroCarrera/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
     }
 }

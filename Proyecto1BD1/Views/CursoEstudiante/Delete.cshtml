@@ -4,7 +4,7 @@
     ViewData["Title"] = "Delete";
 }
 
-<h2>Borrar Relacion de maestro curso y carrera</h2>
+<h2>Borrar relacion de maestro curso carrera y alumno</h2>
 
 <h3>¿Esta seguro que desea borrar esto?</h3>
 <div>
@@ -12,29 +12,36 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            Maestro
+            Alumno
         </dt>
         <dd>
             @Model.ElementAt(0)
         </dd>
         <dt>
-            Carrera
+            Maestro
         </dt>
         <dd>
             @Model.ElementAt(1)
         </dd>
         <dt>
-            Curso
+            Carrera
         </dt>
         <dd>
             @Model.ElementAt(2)
         </dd>
+        <dt>
+            Curso
+        </dt>
+        <dd>
+            @Model.ElementAt(3)
+        </dd>
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" name="registro" value="@Model.ElementAt(0)" />
-        <input type="hidden" name="carrera" value="@Model.ElementAt(1)"/>
-        <input type="hidden" name="curso" value="@Model.ElementAt(2)"/>
+        <input type="hidden" name="carnet" value="@Model.ElementAt(0)" />
+        <input type="hidden" name="registro" value="@Model.ElementAt(1)" />
+        <input type="hidden" name="carrera" value="@Model.ElementAt(2)" />
+        <input type="hidden" name="curso" value="@Model.ElementAt(3)" />
         <input type="submit" value="Borrar" class="btn btn-default" /> |
         <a asp-action="Index">Regresar a la lista</a>
     </form>
