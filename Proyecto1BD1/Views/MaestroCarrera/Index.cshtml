@@ -1,0 +1,31 @@
+﻿@model List<List<String>>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Maestro</h2>
+
+<p>
+    <a asp-action="Create">Crear nuevo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <td>Registro</td>
+            <td>Carrera</td>
+            <td>Curso</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {            
+        <tr>
+            <td>@(item.ElementAt(0))</td>
+            <td>@(item.ElementAt(1))</td>
+            <td>@(item.ElementAt(2))</td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new { registro = item.ElementAt(0), carrera = item.ElementAt(1), curso = item.ElementAt(2) })
+            </td>
+        </tr>
+        }
+    </tbody>

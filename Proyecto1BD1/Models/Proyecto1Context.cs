@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -32,6 +33,8 @@ namespace Proyecto1BD1.Models
         public virtual DbSet<Publicacion> Publicacion { get; set; }
         public virtual DbSet<Respuesta> Respuesta { get; set; }
         public virtual DbSet<TipoAviso> TipoAviso { get; set; }
+
+        public virtual ICollection<Maestro> Maestros { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

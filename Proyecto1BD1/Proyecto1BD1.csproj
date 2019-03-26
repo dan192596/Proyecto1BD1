@@ -23,6 +23,12 @@
     <Content Update="Views\Estudiante\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\MaestroCarrera\Delete.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\MaestroCarrera\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Maestro\Delete.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

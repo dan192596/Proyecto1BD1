@@ -1,0 +1,41 @@
+﻿@model List<String>
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Borrar Estudiante</h2>
+
+<h3>¿Esta seguro que desea borrar esto?</h3>
+<div>
+    <h4>Estudiante</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Maestro
+        </dt>
+        <dd>
+            @Model.ElementAt(0)
+        </dd>
+        <dt>
+            Carrera
+        </dt>
+        <dd>
+            @Model.ElementAt(1)
+        </dd>
+        <dt>
+            Curso
+        </dt>
+        <dd>
+            @Model.ElementAt(2)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" name="registro" value="@Model.ElementAt(0)" />
+        <input type="hidden" name="carrera" value="@Model.ElementAt(1)"/>
+        <input type="hidden" name="curso" value="@Model.ElementAt(2)"/>
+        <input type="submit" value="Borrar" class="btn btn-default" /> |
+        <a asp-action="Index">Regresar a la lista</a>
+    </form>
+</div>
