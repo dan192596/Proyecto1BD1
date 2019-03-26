@@ -54,12 +54,12 @@ namespace Proyecto1BD1.Controllers
                 foreach (var item in collection)
                 {
                     System.Diagnostics.Debug.WriteLine(item.ToString());
-                    switch (item.Key.ToString())
-                    {                        
-                        case "Nombre":
+                    switch (item.Key.ToString().ToLower())
+                    {
+                        case "nombre":
                             Nombre = item.Value;
                             break;
-                        case "Descripcion":
+                        case "descripcion":
                             Descripcion = item.Value;
                             break;
                     }

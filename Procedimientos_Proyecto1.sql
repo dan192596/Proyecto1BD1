@@ -15,12 +15,15 @@ CREATE PROCEDURE INSERCION_ESTUDIANTE(
 	@correo varchar(255),
 	@fecha_nacimiento date,
 	@numero_partida varchar(255),
-	@fotografia image,
-	@password varbinary(1)
+	@fotografia varchar(255),
+	@password varchar(255)
 )AS
 BEGIN
+	DECLARE @X varbinary(1)
+	Set @X = CAST(@password As varbinary(1))
+
 	INSERT INTO estudiante(carnet, nombre, apellido, telefono, telefono_tutor, direccion, correo, fecha_nacimiento, numero_partida, fotografia, password)
-	VALUES(@carnet, @nombre, @apellido, @telefono, @telefono_tutor, @direccion, @correo, @fecha_nacimiento, @numero_partida, @fotografia, @password)
+	VALUES(@carnet, @nombre, @apellido, @telefono, @telefono_tutor, @direccion, @correo, @fecha_nacimiento, @numero_partida, @fotografia, @X)
 END
 
 --Devuelve la lista de todos los estudiantes que están almacenados en la base de datos
@@ -51,8 +54,8 @@ CREATE PROCEDURE INSERCION_MAESTRO(
 	@telefono varchar(255),
 	@direccion varchar(255),
 	@correo varchar(255),
-	@fecha_nacimiento datetime,
-	@fotografia image,
+	@fecha_nacimiento date,
+	@fotografia varchar(255),
 	@password varchar(255)
 )AS
 BEGIN
