@@ -30,7 +30,7 @@ BEGIN
 	SELECT * FROM estudiante
 END
 
---EXEC INSERCION_ESTUDIANTE 201404232, 'Joss', 'Alvarez', '30904112','54148078','villa nueva','j_a@gmail.com','12-14-1994','13456','c://','789'
+EXEC INSERCION_ESTUDIANTE 201403780, 'Amanda', 'Chavez', '30904112','54148078','villa nueva','nicoll@gmail.com','12-14-1994','13456','c://a.jpg','1234'
 
 --Comprobacion de Login de un maestro
 CREATE PROCEDURE LOGIN_ESTUDIANTE(
@@ -262,12 +262,6 @@ BEGIN
 	AND @carrera = C.carrera
 END
 
-select * from curso_estudiante
-GO
-select * from actividad
-GO
-select * from estudiante
-
 --Ver todas las actividades publicadas, el maestro que lo publico, la carrera a la que va dirigido y el curso
 CREATE PROCEDURE VER_ACTIVIDADES_PUBLICADAS
 AS
@@ -349,6 +343,9 @@ BEGIN
 	WHERE M.carrera = @carrera
 END
 
+select * from estudiante
+
+select * from curso_estudiante
 -------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------- NOTA_ZONA -----------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------
@@ -359,9 +356,18 @@ CREATE PROCEDURE VER_NOTAS_ACTIVIDADES_CURSO(
 )AS
 BEGIN
 	SELECT A.titulo, A.valor, N.nota FROM actividad A, nota_zona N
-	WHERE N.curso = @curso	
+	WHERE N.curso = @curso
+	AND A.curso = @curso
 	AND N.carnet = @carnet
 END
+
+-------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------- EXAMEN -----------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+--##Ingresando un examen a la base de datos
+CREATE PROCEDURE
+
+
 
 
 --drop table participacion_examen
