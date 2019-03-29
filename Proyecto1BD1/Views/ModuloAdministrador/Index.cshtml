@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="text-right">
+    <h3>Administrador: </h3>
+    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="Home" asp-action="Index">Logout</a>
+</div>
+
+<div class="home_content text-center">
+    <h2>Modulo Administrador</h2>
+</div>
+
+<div class="home_content text-center">
+    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="Maestro" asp-action="Create">Crear Usuario Maestro</a>
+    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="Maestro" asp-action="Delete">Eliminar Usuario Maestro</a>
+    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Actividades">Cargar CSV</a>
+    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="Carrera" asp-action="Create">Crear Carreras</a>
+    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="Maestro" asp-action="Edit">Asignar Maestros</a>
+    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="Publicacion" asp-action="Create">Programar Aviso</a>
+</div>
