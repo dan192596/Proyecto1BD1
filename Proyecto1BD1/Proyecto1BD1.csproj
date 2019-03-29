@@ -41,6 +41,9 @@
     <Content Update="Views\Maestro\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\ModuloEstudiante\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Publicacion\Delete.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

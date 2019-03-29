@@ -75,62 +75,88 @@ namespace Proyecto1BD1.Controllers
                             rol = item.Value;
                             break;
                     }
-                }
+                }//LOGIN PARA TIPO DE USUARIO ADMINISTRADOR
                 if (rol.Equals("administrador"))
                 {
-                    /*string connectionstring = ConfigurationManager.GetConnectionString("DefaultConnectionString");
-                    SqlConnection con = new SqlConnection(connectionstring);// pass connection string here
-
-
-                    SqlCommand cmd = new SqlCommand("LOGIN_MAESTRO",con);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("@usuario", SqlDbType.Text).Value = usuario;
-                    cmd.Parameters.Add("@registro", SqlDbType.Int).Value = password;
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-
-                    if (dt.Rows.Count > 0)
+                    if (usuario == "bases1" && password == "123456789")
                     {
-
-                        // do your code to show data of datatable in grid or any controls if you are showing it in grid then below is code
-                        //GridView1.DataSource = dt;
-                        //GridView1.DataBind();
-
+                        return RedirectToAction("Index", "ModuloAdministrador");
                     }
                     else
                     {
-                        //lblError.Text = "UserName, Password and UserType are not valid.";
-                    }*/
-                    var dtLogin = getVariableSesion(usuario, password);
-                    //var nombre = dtLogin.Rows[0]["nombre"];
-
-                    if (dtLogin == null)
-                    {
+                        return RedirectToAction(nameof(Index));
                     }
-                    else {
-                        foreach (DataRow drow in dtLogin.Rows) {
-                            Console.WriteLine(drow["nombre"]);
-                        }
-                    }
-
-                    return RedirectToAction("Index", "ModuloAdministrador");
-                }
+                }//LOGIN PARA TIPO DE USUARIO MAESTRO
                 else if (rol.Equals("maestro"))
                 {
-                    return RedirectToAction("Index", "ModuloMaestro");
-                }
+                    int ContadorFilas = 0;
+                    List<String> ValoresUsuario = new List<string>();
+                    String connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                    SqlConnection connection = new SqlConnection(connectionstring);
+                    connection.Open();
+                    String sql = "EXEC LOGIN_MAESTRO @registro =  @param1, @password = @param2";
+                    using (SqlCommand cmd = new SqlCommand(sql, connection))
+                    {
+                        cmd.Parameters.Add("@param1", SqlDbType.Int).SqlValue = usuario;
+                        cmd.Parameters.Add("@param2", SqlDbType.VarChar, 255).SqlValue = password;
+                        cmd.CommandType = CommandType.Text;
+                        SqlDataReader sdr = cmd.ExecuteReader();
+                        while (sdr.Read())
+                        {
+                            ValoresUsuario.Add(sdr[0].ToString());//Registro
+                            ValoresUsuario.Add(sdr[1].ToString());//nombre
+                            ValoresUsuario.Add(sdr[2].ToString());//Apellido
+                            ValoresUsuario.Add(sdr[3].ToString());//Imagen
+                            ContadorFilas++;
+                        }
+                    }
+                    connection.Close();
+                    if (ContadorFilas == 0)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "ModuloMaestro");
+                    }
+                }//LOGIN PARA TIPO DE USUARIO ALUMNO
                 else if(rol.Equals("alumno")){
-
+                    int ContadorFilas = 0;
+                    List<String> ValoresUsuario = new List<string>();
+                    String connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                    SqlConnection connection = new SqlConnection(connectionstring);
+                    connection.Open();
+                    String sql = "EXEC LOGIN_ESTUDIANTE @carnet =  @param1, @password = @param2";
+                    using (SqlCommand cmd = new SqlCommand(sql, connection))
+                    {
+                        cmd.Parameters.Add("@param1", SqlDbType.Int).SqlValue = usuario;
+                        cmd.Parameters.Add("@param2", SqlDbType.VarChar, 255).SqlValue = password;
+                        cmd.CommandType = CommandType.Text;
+                        SqlDataReader sdr = cmd.ExecuteReader();
+                        while (sdr.Read())
+                        {
+                            ValoresUsuario.Add(sdr[0].ToString());//Registro
+                            ValoresUsuario.Add(sdr[1].ToString());//nombre
+                            ValoresUsuario.Add(sdr[2].ToString());//Apellido
+                            ValoresUsuario.Add(sdr[3].ToString());//Imagen
+                            ContadorFilas++;
+                        }
+                    }
+                    connection.Close();
+                    if (ContadorFilas == 0)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "ModuloEstudiante");
+                    }
                 }
-                 //RedirectToPage("ModuloMaestro//Actividades.cshtml");
-                //Redirect("ModuloMaestro//Actividades.cshtml");
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -139,44 +165,5 @@ namespace Proyecto1BD1.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-        protected DataTable getVariableSesion(string usuario, string password) {
-            //var connstring = ConfigurationManager.
-            //    ConnectionStrings["DefaultConnectionString"].ConnectionString;
-            //string connectionstring = ConfigurationManager.GetConnectionString("DefaultConnectionString");
-            
-            string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
-            // pass connection string here
-
-            using (SqlConnection sql = new SqlConnection(connectionstring))
-            {
-                using (SqlCommand cmd = new SqlCommand("LOGIN_MAESTRO", sql))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    sql.Open();
-                    cmd.Parameters.Add(new SqlParameter("@registro", usuario));
-                    cmd.Parameters.Add(new SqlParameter("@password", password));
-                    var dt = new DataTable();
-                    var da = new SqlDataAdapter(cmd);
-                    da.Fill(dt);
-                    return dt;
-                }
-            }
-
-            /*SqlConnection con = new SqlConnection("DefaultConnectionString");// pass connection string here
-
-
-            SqlCommand cmd = new SqlCommand("LOGIN_MAESTRO");
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@registro", SqlDbType.Text).Value = usuario;
-            cmd.Parameters.Add("@password", SqlDbType.Text).Value = password;
-            SqlDataAdapter da = new SqlDataAdapter(cmd,con);
-
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-
-            return dt;*/
-        }
-
     }
 }
