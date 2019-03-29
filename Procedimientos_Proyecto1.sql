@@ -365,8 +365,23 @@ END
 --------------------------------------------------- EXAMEN -----------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------
 --##Ingresando un examen a la base de datos
-CREATE PROCEDURE
+CREATE PROCEDURE INSERTAR_EXAMEN(
+	@fecha_hora_inicio datetime,
+	@fecha_hora_final datetime,
+	@registro int,						--maestro que sube el examen (logueado)
+	@carrera int,						--selecciona para qué carrera (en las carreras que imparte)
+	@curso int							--selecciona para qué curso (de los que el maestro imparte)
+)AS
+BEGIN
+	DECLARE 
+		@examen int
 
+	INSERT INTO examen(fecha_hora_inicio, fecha_hora_final, registro, carrera, curso)
+	VALUES(@fecha_hora_inicio, @fecha_hora_final, @registro, @carrera, @curso)
+
+	SELECT @examen = SCOPE_IDENTITY()
+	RETURN @examen
+END
 
 
 
