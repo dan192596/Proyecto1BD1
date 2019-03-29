@@ -1,10 +1,11 @@
 ﻿
 @{
     ViewData["Title"] = "Index";
+    var Nombre = (String)ViewData["Nombre"];
 }
 
 <div class="text-right">
-    <h3>Administrador: </h3>
+    <h3>Administrador: @Nombre</h3>
     <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="Home" asp-action="Index">Logout</a>
 </div>
 

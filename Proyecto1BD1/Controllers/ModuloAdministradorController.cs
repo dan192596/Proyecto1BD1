@@ -12,6 +12,7 @@ namespace Proyecto1BD1.Controllers
         // GET: ModuloAdministrador
         public ActionResult Index()
         {
+            ViewData["Nombre"] = VariablesGlobales.Nombre;
             ViewData["Message"] = "Modulo Administrador.";
             return View();
         }

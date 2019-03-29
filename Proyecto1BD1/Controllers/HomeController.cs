@@ -80,6 +80,8 @@ namespace Proyecto1BD1.Controllers
                 {
                     if (usuario == "bases1" && password == "123456789")
                     {
+                        VariablesGlobales.Tipo = VariablesGlobales.TipoUsuario.Administrador;
+                        VariablesGlobales.Nombre = "bases1";
                         return RedirectToAction("Index", "ModuloAdministrador");
                     }
                     else
@@ -117,6 +119,10 @@ namespace Proyecto1BD1.Controllers
                     }
                     else
                     {
+                        VariablesGlobales.Codigo = ValoresUsuario.ElementAt(0);
+                        VariablesGlobales.Nombre = ValoresUsuario.ElementAt(1);
+                        VariablesGlobales.Apellido = ValoresUsuario.ElementAt(2);
+                        VariablesGlobales.Tipo = VariablesGlobales.TipoUsuario.Maestro;
                         return RedirectToAction("Index", "ModuloMaestro");
                     }
                 }//LOGIN PARA TIPO DE USUARIO ALUMNO
@@ -149,6 +155,10 @@ namespace Proyecto1BD1.Controllers
                     }
                     else
                     {
+                        VariablesGlobales.Codigo = ValoresUsuario.ElementAt(0);
+                        VariablesGlobales.Nombre = ValoresUsuario.ElementAt(1);
+                        VariablesGlobales.Apellido = ValoresUsuario.ElementAt(2);
+                        VariablesGlobales.Tipo = VariablesGlobales.TipoUsuario.Estudiante;
                         return RedirectToAction("Index", "ModuloEstudiante");
                     }
                 }

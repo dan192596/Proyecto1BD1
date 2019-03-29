@@ -1,10 +1,14 @@
 ﻿
 @{
+    var Codigo = (String)ViewData["Codigo"];
+    var Nombre = (String)ViewData["Nombre"];
+    var Apellido = (String)ViewData["Apellido"];
+    var Fotografia = (String)ViewData["Fotografia"];
     ViewData["Title"] = "Index";
 }
 
 <div class="text-right">
-    <h3>Estudiante: </h3>
+    <h3>Estudiante: @Nombre @Apellido -- Codigo: @Codigo </h3>
     <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="Home" asp-action="Index">Logout</a>
 </div>
 

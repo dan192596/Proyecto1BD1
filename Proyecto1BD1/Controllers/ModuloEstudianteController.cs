@@ -12,6 +12,10 @@ namespace Proyecto1BD1.Controllers
         // GET: ModuloEstudiante
         public ActionResult Index()
         {
+            ViewData["Codigo"] = VariablesGlobales.Codigo;
+            ViewData["Nombre"] = VariablesGlobales.Nombre;
+            ViewData["Apellido"] = VariablesGlobales.Apellido;
+            ViewData["Fotografia"] = VariablesGlobales.Fotografia;
             return View();
         }
 
