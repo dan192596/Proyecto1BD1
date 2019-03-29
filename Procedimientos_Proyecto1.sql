@@ -19,11 +19,8 @@ CREATE PROCEDURE INSERCION_ESTUDIANTE(
 	@password varchar(255)
 )AS
 BEGIN
-	DECLARE @X varbinary(1)
-	Set @X = CAST(@password As varbinary(1))
-
 	INSERT INTO estudiante(carnet, nombre, apellido, telefono, telefono_tutor, direccion, correo, fecha_nacimiento, numero_partida, fotografia, password)
-	VALUES(@carnet, @nombre, @apellido, @telefono, @telefono_tutor, @direccion, @correo, @fecha_nacimiento, @numero_partida, @fotografia, @X)
+	VALUES(@carnet, @nombre, @apellido, @telefono, @telefono_tutor, @direccion, @correo, @fecha_nacimiento, @numero_partida, @fotografia, @password)
 END
 
 --Devuelve la lista de todos los estudiantes que est�n almacenados en la base de datos
@@ -33,7 +30,7 @@ BEGIN
 	SELECT * FROM estudiante
 END
 
-EXEC INSERCION_ESTUDIANTE 201404232, 'Joss', 'Alvarez', '30904112','54148078','villa nueva','j_a@gmail.com','12-14-1994','13456','c://','789'
+--EXEC INSERCION_ESTUDIANTE 201404232, 'Joss', 'Alvarez', '30904112','54148078','villa nueva','j_a@gmail.com','12-14-1994','13456','c://','789'
 
 --Comprobacion de Login de un maestro
 CREATE PROCEDURE LOGIN_ESTUDIANTE(
@@ -41,15 +38,12 @@ CREATE PROCEDURE LOGIN_ESTUDIANTE(
 	@password varchar(255)
 )AS
 BEGIN
-	IF EXISTS (SELECT 1 FROM estudiante E WHERE E.carnet = @carnet AND E.password = @password)
+	IF EXISTS (SELECT E.carnet FROM estudiante E WHERE E.carnet = @carnet AND E.password = @password)
 	BEGIN
 		SELECT E.carnet, E.nombre, E.apellido, E.fotografia FROM estudiante E WHERE E.carnet = @carnet AND E.password = @password
 	END
 END
 
-SELECT * FROM estudiante
-EXEC LOGIN_ESTUDIANTE 20140,'789'
-drop procedure LOGIN_ESTUDIANTE
 -------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------- MAESTRO -------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------
@@ -68,11 +62,8 @@ CREATE PROCEDURE INSERCION_MAESTRO(
 	@password varchar(255)
 )AS
 BEGIN
-	DECLARE @X varbinary(1)
-	Set @X = CAST(@password As varbinary(1))
-
 	INSERT INTO maestro(registro, dpi, nombre, apellido, telefono, direccion, correo, fecha_nacimiento, fotografia, password)
-	VALUES(@registro, @dpi, @nombre, @apellido, @telefono, @direccion, @correo, @fecha_nacimiento, @fotografia, @X)
+	VALUES(@registro, @dpi, @nombre, @apellido, @telefono, @direccion, @correo, @fecha_nacimiento, @fotografia, @password)
 END
 
 CREATE PROCEDURE LOGIN_MAESTRO(
@@ -105,6 +96,8 @@ BEGIN
 			   ON C.carrera = R.carrera
 	WHERE R.registro = @registro_maestro
 END
+
+exec VER_CURSOS_CARRERA_MAESTRO 123
 
 --Mostrar carreras en las que imparte cursos cierto maestro
 CREATE PROCEDURE VER_CARRERAS_MAESTRO(
@@ -239,7 +232,7 @@ END
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------- ACTIVIDAD -------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------
---Creacion de una Actividad en la base de datos
+--#####Creacion de una Actividad en la base de datos, Se crea una publicación y Ademas se asigna la zona en Nota_Zona
 CREATE PROCEDURE INSERCION_ACTIVIDAD(
 	@titulo varchar(255),
 	@descripcion_actividad varchar(255),
@@ -253,13 +246,27 @@ CREATE PROCEDURE INSERCION_ACTIVIDAD(
 )AS
 BEGIN
 	DECLARE
-		@publicacion int
+		@publicacion int,
+		@actividad int
 
 	EXEC @publicacion = INSERCION_PUBLICACION @descripcion_publicacion, @fecha_publicacion
 
 	INSERT INTO actividad(titulo, descripcion, fecha_publicacion, valor, fecha_limite, registro, carrera, curso, publicacion)
-	VALUES(@titulo, @descripcion_actividad, @fecha_limite, @registro, @carrera,@curso, @publicacion)
+	VALUES(@titulo, @descripcion_actividad, @fecha_publicacion, @valor, @fecha_limite, @registro, @carrera, @curso, @publicacion)
+
+	SELECT @actividad = SCOPE_IDENTITY()
+
+	INSERT INTO nota_zona(nota, observacion, actividad, carnet, registro, carrera, curso)
+	SELECT 0,'',@actividad, C.carnet, C.registro, C.carrera, C.curso FROM curso_estudiante C
+	WHERE @curso = C.curso
+	AND @carrera = C.carrera
 END
+
+select * from curso_estudiante
+GO
+select * from actividad
+GO
+select * from estudiante
 
 --Ver todas las actividades publicadas, el maestro que lo publico, la carrera a la que va dirigido y el curso
 CREATE PROCEDURE VER_ACTIVIDADES_PUBLICADAS
@@ -272,7 +279,18 @@ BEGIN
 	AND A.carrera = K.carrera
 END
 
---########### Ver las actividades que ha publicado cierto maestro
+--########### Ver las actividades que ha publicado cierto maestro de cierta carrera de un curso
+CREATE PROCEDURE VER_ACTIVIDADES_MAESTRO(
+	@registro int,     --maestro que la publico
+	@carrera int,	   --carrera
+	@curso int		   --curso al que va dirigido
+)AS
+BEGIN
+	SELECT A.titulo, A.fecha_publicacion, A.valor FROM actividad A
+	WHERE A.registro = @registro
+	AND A.curso = @curso
+	AND A.carrera = @carrera
+END
 
 -------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------- DOCUMENTO -------------------------------------------------------
@@ -316,58 +334,34 @@ BEGIN
 	WHERE documento = @documento
 END
 
+-------------------------------------------------------------------------------------------------------------------
+----------------------------------------------- CURSO_ESTUDIANTE --------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+--########Asignar un estudiante a una carrera, se asignan automaticamente los cursos del estudiante en CURSO_ESTUDIANTE
+CREATE PROCEDURE ASIGNAR_ESTUDIANTE_CARRERA(
+	@carnet int,
+	@carrera int
+)AS
+BEGIN
+	INSERT INTO curso_estudiante(carnet, registro, carrera, curso)
+	SELECT @carnet, M.registro, M.carrera, M.curso 
+	FROM maestro_carrera M
+	WHERE M.carrera = @carrera
+END
 
-
-
-
-
-
-
-
-
---CREATE PROCEDURE ASIGNAR_MAESTRO_CARRERA(
---	@nombre_maestro varchar(255),
---	@apellido_maestro varchar(255),
---	@nombre_carrera varchar(255)
---)A
---BEGIN
---	DECLARE
---		@registro int,
---		@carrera int
-
---	EXEC @registro = GET_REGISTRO_MAESTRO @nombre_maestro, @apellido_maestro
---	EXEC @carrera = GET_CODIGO_CARRERA @nombre_carrera
-
---	INSERT INTO maestro_carrera(registro, carrera)
---	VALUES(@registro, @carrera)
---END
-
-----Obteniendo el Registro de un maestro a travez de su nombre y apellido
---CREATE PROCEDURE GET_REGISTRO_MAESTRO(
---	@nombre varchar(255),
---	@apellido varchar(255)
---)AS
---BEGIN
---	DECLARE
---		@ID int
-
---	SELECT @ID = registro FROM maestro
---	WHERE nombre = @nombre AND apellido = @apellido
---	RETURN @ID
---END
-
-----Obteniendo el c�digo de la carrera a travez de su nombre
---CREATE PROCEDURE GET_CODIGO_CARRERA(
---	@nombre varchar(255)
---)AS
---BEGIN
---	DECLARE
---		@CARRERA int
-
---	SELECT @CARRERA = carrera FROM carrera
---	WHERE nombre = @nombre
---	RETURN @CARRERA
---END
+-------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------- NOTA_ZONA -----------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+--####Ver notas de las actividades de un estudiante de cierto curso
+CREATE PROCEDURE VER_NOTAS_ACTIVIDADES_CURSO(
+	@carnet int,
+	@curso int	
+)AS
+BEGIN
+	SELECT A.titulo, A.valor, N.nota FROM actividad A, nota_zona N
+	WHERE N.curso = @curso	
+	AND N.carnet = @carnet
+END
 
 
 --drop table participacion_examen
