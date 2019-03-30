@@ -11,6 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\AlumnoCarrera\Delete.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\AlumnoCarrera\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\CursoEstudiante\Delete.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

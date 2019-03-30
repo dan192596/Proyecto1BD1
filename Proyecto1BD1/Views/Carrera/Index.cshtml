@@ -6,7 +6,8 @@
 <h2>Carrera</h2>
 
 <p>
-    <a asp-action="Create">Crear nuevo</a>
+    <a class="btn btn-primary btn-sm ml-auto" asp-action="Create">Crear nueva carrera</a><br /><br />
+    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloAdministrador" asp-action="Index">Regresar a modulo administrador</a>
 </p>
 <table class="table">
     <thead>
@@ -19,15 +20,14 @@
     <tbody>
         @foreach (var item in Model)
         {
-            
-        <tr>
-            <td>@(item.ElementAt(0))</td>
-            <td>@(item.ElementAt(1))</td>
-            <td>@(item.ElementAt(2))</td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@(item.ElementAt(0))">Editar</a>
-                <a asp-action="Delete" asp-route-id="@(item.ElementAt(0))">Eliminar</a>
-            </td>
-        </tr>
+
+            <tr>
+                <td>@(item.ElementAt(0))</td>
+                <td>@(item.ElementAt(1))</td>
+                <td>@(item.ElementAt(2))</td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@(item.ElementAt(0))">Eliminar</a>
+                </td>
+            </tr>
         }
     </tbody>

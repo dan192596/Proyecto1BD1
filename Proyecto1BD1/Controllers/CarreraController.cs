@@ -15,6 +15,7 @@ namespace Proyecto1BD1.Controllers
         {
             this.configuration = configuration;
         }
+        
         // GET: Carrera
         public ActionResult Index()
         {            
@@ -22,7 +23,22 @@ namespace Proyecto1BD1.Controllers
             SqlConnection connection = new SqlConnection(connectionstring);
             List<List<String>> al = new List<List<String>>();
             connection.Open();
-            SqlCommand com = new SqlCommand("SELECT * FROM carrera", connection);
+            SqlCommand com = new SqlCommand("VER_CARRERAS", connection);
+            if (VariablesGlobales.Tipo != VariablesGlobales.TipoUsuario.Administrador)
+            {//Solo el administrador puede ver las carreras
+                if (VariablesGlobales.Tipo == VariablesGlobales.TipoUsuario.Estudiante)
+                {
+                    return RedirectToAction("Index", "ModuloEstudiante");
+                }
+                else if(VariablesGlobales.Tipo == VariablesGlobales.TipoUsuario.Maestro)
+                {                    
+                    return RedirectToAction("Index", "ModuloMaestro");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             SqlDataReader sdr = com.ExecuteReader();
             while (sdr.Read())
             {
@@ -39,6 +55,21 @@ namespace Proyecto1BD1.Controllers
         // GET: Carrera/Create
         public ActionResult Create()
         {
+            if (VariablesGlobales.Tipo != VariablesGlobales.TipoUsuario.Administrador)
+            {//Solo el administrador puede ver las carreras
+                if (VariablesGlobales.Tipo == VariablesGlobales.TipoUsuario.Estudiante)
+                {
+                    return RedirectToAction("Index", "ModuloEstudiante");
+                }
+                else if (VariablesGlobales.Tipo == VariablesGlobales.TipoUsuario.Maestro)
+                {
+                    return RedirectToAction("Index", "ModuloMaestro");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             return View();
         }
 
@@ -47,6 +78,21 @@ namespace Proyecto1BD1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
+            if (VariablesGlobales.Tipo != VariablesGlobales.TipoUsuario.Administrador)
+            {//Solo el administrador puede ver las carreras
+                if (VariablesGlobales.Tipo == VariablesGlobales.TipoUsuario.Estudiante)
+                {
+                    return RedirectToAction("Index", "ModuloEstudiante");
+                }
+                else if (VariablesGlobales.Tipo == VariablesGlobales.TipoUsuario.Maestro)
+                {
+                    return RedirectToAction("Index", "ModuloMaestro");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             try
             {
                 String Nombre = "";
@@ -90,6 +136,21 @@ namespace Proyecto1BD1.Controllers
         // GET: Carrera/Delete/5
         public ActionResult Delete(int id)
         {
+            if (VariablesGlobales.Tipo != VariablesGlobales.TipoUsuario.Administrador)
+            {//Solo el administrador puede ver las carreras
+                if (VariablesGlobales.Tipo == VariablesGlobales.TipoUsuario.Estudiante)
+                {
+                    return RedirectToAction("Index", "ModuloEstudiante");
+                }
+                else if (VariablesGlobales.Tipo == VariablesGlobales.TipoUsuario.Maestro)
+                {
+                    return RedirectToAction("Index", "ModuloMaestro");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             String connectionstring = configuration.GetConnectionString("DefaultConnectionString");
             SqlConnection connection = new SqlConnection(connectionstring);
             List<String> numb = new List<string>(); ;
@@ -116,6 +177,21 @@ namespace Proyecto1BD1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
+            if (VariablesGlobales.Tipo != VariablesGlobales.TipoUsuario.Administrador)
+            {//Solo el administrador puede ver las carreras
+                if (VariablesGlobales.Tipo == VariablesGlobales.TipoUsuario.Estudiante)
+                {
+                    return RedirectToAction("Index", "ModuloEstudiante");
+                }
+                else if (VariablesGlobales.Tipo == VariablesGlobales.TipoUsuario.Maestro)
+                {
+                    return RedirectToAction("Index", "ModuloMaestro");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             try
             {
                 String connectionstring = configuration.GetConnectionString("DefaultConnectionString");
@@ -140,6 +216,21 @@ namespace Proyecto1BD1.Controllers
         // GET: Carrera/Edit/5
         public ActionResult Edit(int id)
         {
+            if (VariablesGlobales.Tipo != VariablesGlobales.TipoUsuario.Administrador)
+            {//Solo el administrador puede ver las carreras
+                if (VariablesGlobales.Tipo == VariablesGlobales.TipoUsuario.Estudiante)
+                {
+                    return RedirectToAction("Index", "ModuloEstudiante");
+                }
+                else if (VariablesGlobales.Tipo == VariablesGlobales.TipoUsuario.Maestro)
+                {
+                    return RedirectToAction("Index", "ModuloMaestro");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             return View();
         }
 
@@ -148,6 +239,21 @@ namespace Proyecto1BD1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
+            if (VariablesGlobales.Tipo != VariablesGlobales.TipoUsuario.Administrador)
+            {//Solo el administrador puede ver las carreras
+                if (VariablesGlobales.Tipo == VariablesGlobales.TipoUsuario.Estudiante)
+                {
+                    return RedirectToAction("Index", "ModuloEstudiante");
+                }
+                else if (VariablesGlobales.Tipo == VariablesGlobales.TipoUsuario.Maestro)
+                {
+                    return RedirectToAction("Index", "ModuloMaestro");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             try
             {
                 String Nombre = "";

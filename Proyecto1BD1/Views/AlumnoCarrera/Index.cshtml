@@ -3,33 +3,31 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Estudiante</h2>
+<h2>Registro de alumno a carrera</h2>
 
 <p>
-    <a class="btn btn-primary btn-sm ml-auto" asp-action="Create">Crear nuevo estudiante</a><br /><br />
+    <a class="btn btn-primary btn-sm ml-auto" asp-action="Create">Crear nuevo registro de alumno en carrera</a><br /><br />
     <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloAdministrador" asp-action="Index">Regresar a modulo administrador</a>
 </p>
 <table class="table">
     <thead>
-        <tr>
+        <tr>            
+            <td>Id Carrera</td>
+            <td>Nombre carrera</td>
             <td>Carnet</td>
-            <td>Nombre</td>
-            <td>Apellido</td>
-            <td>Correo</td>
+            <td>Nombre estudiante</td>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
-        {
-            
+        {            
         <tr>
             <td>@(item.ElementAt(0))</td>
-            <td>@(item.ElementAt(1))</td>
             <td>@(item.ElementAt(2))</td>
-            <td>@(item.ElementAt(3))</td>
+            <td>@(item.ElementAt(1))</td>
+            <td>@(item.ElementAt(3))</td>            
             <td>
-                <a asp-action="Edit" asp-route-id="@(item.ElementAt(0))">Editar</a>
-                <a asp-action="Delete" asp-route-id="@(item.ElementAt(0))">Eliminar</a>
+                @Html.ActionLink("Delete", "Delete", new { carrera = item.ElementAt(0), estudiante = item.ElementAt(1) })
             </td>
         </tr>
         }

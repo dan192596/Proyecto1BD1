@@ -28,7 +28,7 @@ namespace Proyecto1BD1.Controllers
             SqlConnection connection = new SqlConnection(connectionstring);
             List<List<String>> al = new List<List<String>>();
             connection.Open();
-            SqlCommand com = new SqlCommand("SELECT * FROM maestro_carrera", connection);
+            SqlCommand com = new SqlCommand("EXEC VER_MAESTRO_CARRERA_CURSO", connection);
             SqlDataReader sdr = com.ExecuteReader();
             while (sdr.Read())
             {
@@ -36,6 +36,9 @@ namespace Proyecto1BD1.Controllers
                 numb.Add(sdr[0].ToString());//Registro
                 numb.Add(sdr[1].ToString());//Carrera
                 numb.Add(sdr[2].ToString());//Curso
+                numb.Add(sdr[3].ToString());//Registro
+                numb.Add(sdr[4].ToString());//Carrera
+                numb.Add(sdr[5].ToString());//Curso
                 al.Add(numb);
             }
             connection.Close();

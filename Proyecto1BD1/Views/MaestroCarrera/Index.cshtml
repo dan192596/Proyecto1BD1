@@ -3,17 +3,21 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Maestro</h2>
+<h2>Registro de maestro</h2>
 
 <p>
-    <a asp-action="Create">Crear nuevo</a>
+    <a class="btn btn-primary btn-sm ml-auto" asp-action="Create">Crear nuevo registro de maestro en carrera</a><br /><br />
+    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloAdministrador" asp-action="Index">Regresar a modulo administrador</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <td>Registro</td>
-            <td>Carrera</td>
-            <td>Curso</td>
+            <td>Maestro</td>
+            <td>Id Carrera</td>
+            <td>Nombre Carrera</td>
+            <td>Id Curso</td>
+            <td>Nombre Curso</td>
         </tr>
     </thead>
     <tbody>
@@ -21,8 +25,11 @@
         {            
         <tr>
             <td>@(item.ElementAt(0))</td>
+            <td>@(item.ElementAt(3))</td>
             <td>@(item.ElementAt(1))</td>
+            <td>@(item.ElementAt(4))</td>
             <td>@(item.ElementAt(2))</td>
+            <td>@(item.ElementAt(5))</td>
             <td>
                 @Html.ActionLink("Delete", "Delete", new { registro = item.ElementAt(0), carrera = item.ElementAt(1), curso = item.ElementAt(2) })
             </td>

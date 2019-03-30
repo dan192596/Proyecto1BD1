@@ -175,6 +175,15 @@ BEGIN
 	VALUES(@registro, @carrera, @curso)
 END
 
+CREATE PROCEDURE VER_MAESTRO_CARRERA_CURSO
+AS
+BEGIN
+	SELECT DISTINCT maestro_carrera.registro, maestro_carrera.carrera, maestro_carrera.curso, maestro.nombre, carrera.nombre, curso.cu
+	FROM maestro_carrera, maestro,carrera,curso
+	WHERE maestro_carrera.registro =maestro.registro
+	AND maestro_carrera.carrera = carrera.carrera
+	AND maestro_carrera.curso = curso.curso
+END
 --EXEC ASIGNAR_MAETRO_CARRERA_CURSO 123, 6, 1
 --EXEC ASIGNAR_MAETRO_CARRERA_CURSO 123, 7, 2
 --EXEC ASIGNAR_MAETRO_CARRERA_CURSO 456, 7, 3
@@ -343,9 +352,21 @@ BEGIN
 	WHERE M.carrera = @carrera
 END
 
+
+CREATE PROCEDURE VER_ESTUDIANTE_CARRERA
+AS
+BEGIN
+	SELECT DISTINCT curso_estudiante.carrera, curso_estudiante.carnet, carrera.nombre, estudiante.nombre
+	FROM curso_estudiante,carrera,estudiante
+	WHERE curso_estudiante.carrera = carrera.carrera
+	AND curso_estudiante.carnet = estudiante.carnet
+END
+
 select * from estudiante
 
 select * from curso_estudiante
+
+
 -------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------- NOTA_ZONA -----------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------
