@@ -1,10 +1,14 @@
-﻿
+﻿@model List<List<String>>
 @{
+    var Codigo = (String)ViewData["Codigo"];
+    var Nombre = (String)ViewData["Nombre"];
+    var Apellido = (String)ViewData["Apellido"];
+    var Fotografia = (String)ViewData["Fotografia"];
     ViewData["Title"] = "Publicaciones";
 }
 
 <div class="text-right">
-    <h3>Catedratico: </h3>
+    <h3>Catedratico: @Nombre @Apellido -- Codigo: @Codigo </h3>
     <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="Home" asp-action="Index">Logout</a>
 </div>
 
@@ -18,7 +22,39 @@
     <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="MaterialApoyo">Material de Apoyo</a>
     <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Actividades">Actividades</a>
     <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Alumnos</a>
-    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Publicar Aviso</a>
-    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Programar Aviso</a>
 </div>
 
+<div>
+
+<link href="~/css/div.css" rel="stylesheet" />
+
+<div class="grid-container">
+    <div class="CuadroInfo">
+        <div class="Textcenter">
+            <table class="table">
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <h2>@(item.ElementAt(0))</h2>
+                        <h6>Materia: @(item.ElementAt(1))</h6>
+                        <h6>Descripcion: @(item.ElementAt(2))</h6>
+                        <h6>Fecha Publicacion: @(item.ElementAt(3))</h6>
+                        <h6>Fecha Limite: @(item.ElementAt(5))</h6>
+                        <h6>Nota: @(item.ElementAt(4)) pts</h6>
+                        <a asp-action="Edit" asp-route-id="@(item.ElementAt(0))">Editar &nbsp &nbsp &nbsp</a>
+                        <a asp-action="Delete" asp-route-id="@(item.ElementAt(0))">Eliminar &nbsp &nbsp &nbsp</a>
+                        <a asp-action="Delete" asp-route-id ="@(item.ElementAt(0))"> Calificar</a>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="SubInfo"></div>
+    <div class="SubInfo2">
+        <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Crear Actividad</a><br /><br />
+        <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Examen en Linea</a><br /><br />
+        <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Asignar Alumnos</a>
+    </div>
+</div>
+
+    </div>

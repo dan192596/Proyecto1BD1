@@ -19,6 +19,63 @@ namespace Proyecto1BD1.Controllers
             return View();
         }
 
+        // GET: ModuloEstudiante
+        public ActionResult MaterialApoyo()
+        {
+            ViewData["Codigo"] = VariablesGlobales.Codigo;
+            ViewData["Nombre"] = VariablesGlobales.Nombre;
+            ViewData["Apellido"] = VariablesGlobales.Apellido;
+            ViewData["Fotografia"] = VariablesGlobales.Fotografia;
+            return View();
+        }
+
+        // GET: ModuloEstudiante
+        public ActionResult Actividades()
+        {
+            ViewData["Codigo"] = VariablesGlobales.Codigo;
+            ViewData["Nombre"] = VariablesGlobales.Nombre;
+            ViewData["Apellido"] = VariablesGlobales.Apellido;
+            ViewData["Fotografia"] = VariablesGlobales.Fotografia;
+            return View();
+        }
+
+        // GET: ModuloEstudiante
+        public ActionResult Notas()
+        {
+            ViewData["Codigo"] = VariablesGlobales.Codigo;
+            ViewData["Nombre"] = VariablesGlobales.Nombre;
+            ViewData["Apellido"] = VariablesGlobales.Apellido;
+            ViewData["Fotografia"] = VariablesGlobales.Fotografia;
+            return View();
+        }
+
+        // GET: ModuloEstudiante
+        public ActionResult Notificaciones()
+        {
+            ViewData["Codigo"] = VariablesGlobales.Codigo;
+            ViewData["Nombre"] = VariablesGlobales.Nombre;
+            ViewData["Apellido"] = VariablesGlobales.Apellido;
+            ViewData["Fotografia"] = VariablesGlobales.Fotografia;
+            return View();
+        }
+
+        // POST: ModuloEstudiante/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(IFormCollection collection)
+        {
+            try
+            {
+                // TODO: Add insert logic here
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
         // GET: ModuloEstudiante/Details/5
         public ActionResult Details(int id)
         {
