@@ -1,0 +1,26 @@
+﻿
+@{
+    var Codigo = (String)ViewData["Codigo"];
+    var Nombre = (String)ViewData["Nombre"];
+    var Apellido = (String)ViewData["Apellido"];
+    var Fotografia = (String)ViewData["Fotografia"];
+    ViewData["Title"] = "Actividades";
+}
+
+<div class="text-right">
+    <h3>Estudiante: @Nombre @Apellido -- Carnet: @Codigo </h3>
+    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="Home" asp-action="Index">Logout</a>
+</div>
+
+<div class="home_content text-center">
+    <h2>Modulo Estudiantes</h2>
+    <h4>Curso: </h4>
+</div>
+
+<div class="home_content text-center">
+    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloEstudiante" asp-action="Index">Publicaciones</a>
+    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloEstudiante" asp-action="MaterialApoyo">Material de Apoyo</a>
+    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloEstudiante" asp-action="Actividades">Actividades</a>
+    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloEstudiante" asp-action="Notas">Mis Notas</a>
+    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloEstudiante" asp-action="Notificaciones">Notificaciones</a>
+</div>
