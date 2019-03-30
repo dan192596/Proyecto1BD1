@@ -1,4 +1,4 @@
-﻿
+﻿@model List<List<String>>
 @{
     var Codigo = (String)ViewData["Codigo"];
     var Nombre = (String)ViewData["Nombre"];
@@ -22,10 +22,43 @@
     <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="MaterialApoyo">Material de Apoyo</a>
     <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Actividades">Actividades</a>
     <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Alumnos</a>
-    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Publicar Aviso</a>
-    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Programar Aviso</a>
 </div>
 
+<link href="~/css/div.css" rel="stylesheet" />
 
 
+<div class="grid-container">
+    <div class="CuadroInfo">
+        <div class="Textcenter">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Id</td>
+                        <td>Descripcion</td>
+                        <td>Fecha y hora</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
 
+                        <tr>
+                            <td>@(item.ElementAt(0))</td>
+                            <td>@(item.ElementAt(1))</td>
+                            <td>@(item.ElementAt(2))</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@(item.ElementAt(0))">Editar</a>
+                                <a asp-action="Delete" asp-route-id="@(item.ElementAt(0))">Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="SubInfo"></div>
+    <div class="SubInfo2">
+        <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="Publicacion" asp-action="Create">Publicar Aviso</a>
+        <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="Publicacion" asp-action="Edit">Programar Aviso</a>
+    </div>
+</div>

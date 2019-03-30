@@ -1,10 +1,13 @@
-﻿
-@{
-    ViewData["Title"] = "Alumnos";
+﻿@{
+    var Codigo = (String)ViewData["Codigo"];
+    var Nombre = (String)ViewData["Nombre"];
+    var Apellido = (String)ViewData["Apellido"];
+    var Fotografia = (String)ViewData["Fotografia"];
+    ViewData["Title"] = "Index";
 }
 
 <div class="text-right">
-    <h3>Catedratico: </h3>
+    <h3>Catedratico: @Nombre @Apellido -- Codigo: @Codigo </h3>
     <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="Home" asp-action="Index">Logout</a>
 </div>
 
@@ -18,8 +21,25 @@
     <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="MaterialApoyo">Material de Apoyo</a>
     <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Actividades">Actividades</a>
     <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Alumnos</a>
-    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Publicar Aviso</a>
-    <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Programar Aviso</a>
 </div>
 
+<div>
 
+    <link href="~/css/div.css" rel="stylesheet" />
+
+    <div class="grid-container">
+        <div class="CuadroInfo">
+            <div class="Textcenter">
+                <h6>Notas de alumnos por materia: </h6>
+            </div>
+        </div>
+        <div class="SubInfo"></div>
+        <div class="SubInfo2">
+            <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Agregar Alumnos</a><br /><br />
+            <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Eliminar Alumnos</a><br /><br />
+            <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Cargar CSV</a><br /><br />
+            <a class="btn btn-primary btn-sm ml-auto" asp-area="" asp-controller="ModuloMaestro" asp-action="Alumnos">Descargar Nota PDF</a>
+        </div>
+    </div>
+
+</div>
